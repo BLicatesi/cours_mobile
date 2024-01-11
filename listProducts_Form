@@ -72,11 +72,20 @@ class _MainAppState extends State<MainApp> {
                 ],
               ),
             ),
-            ElevatedButton(
-              onPressed: () {
-                ajouterProduit();
-              },
-              child: Text('Ajouter Produit'),
+            Row(
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    ajouterProduit();
+                  },
+                  child: Text('Ajouter Produit'),
+                ),
+                SizedBox(width: 8), // Espace entre les boutons
+                ElevatedButton(
+                  onPressed: () {},
+                  child: Text('Annuler'),
+                ),
+              ],
             ),
             Expanded(
               child: ListView.builder(
