@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 
 void main() {
@@ -114,7 +112,7 @@ class _MainAppState extends State<MainApp> {
     String quantite = quantiteController.text;
     String descriptif = descriptifController.text;
     String imageUrl = imageUrlController.text;
-    // On attend l'intégralité du formulaire pour pouvoir insérer et finalement afficher les éléments.
+    // On attend l'intégralité (hormis l'image) du formulaire pour pouvoir insérer et finalement afficher les éléments.
     if (productName.isNotEmpty && marque.isNotEmpty && quantite.isNotEmpty && descriptif.isNotEmpty) {
       setState(() {
         produits.add({
