@@ -1,0 +1,49 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MainApp());
+}
+
+class MainApp extends StatelessWidget {
+  MainApp({super.key});
+
+  List<Map<String, dynamic>> produits = [
+    {'name': 'Rocher', 'marque': 'Ferrero', 'quantite': 2, 'descriptif': 'Chocolat', 'imageUrl': 'https://media.carrefour.fr/medias/2492169d51f43977a1addb8577183cf3/p_200x200/08000500373118-h1n1-s25.jpg'},
+    {'name': 'Chocapic', 'marque': 'Nestlé', 'quantite': 3, 'descriptif': 'Céréale au chocolat', 'imageUrl': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSddlMBUrVU41EBhHr3XLYfZEc7LAHWXFA1nw&usqp=CAU'},
+    {'name': 'Chips', 'marque': 'Lays', 'quantite': 10, 'descriptif': 'Chips salées', 'imageUrl': 'https://media.licdn.com/dms/image/C560BAQHuSERr0x2Cyw/company-logo_200_200/0/1634894870600/lays_logo?e=2147483647&v=beta&t=rbu9c2TeuN13pc8QRvx3RuwESIr0Z7ca4aV5K6tJ50I'},
+    // ICI On peut rajouter d'autre produit, ils seront automatiquement rajouter sur l'écran
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.red,
+          title: Text('Liste de Produits'),
+        ),
+        body: ListView.builder(
+          itemCount: produits.length,
+          itemBuilder: (context, index){
+            Map<String, dynamic> produit = produits[index];
+
+            return ListTile(
+              title: Text(produit['name']),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Marque: ${produit['marque']}, Quantité: ${produit['quantite']}, Descriptif: ${produit['descriptif']}'),
+                ],
+              ),
+              // Ce qui permet l'affichage de l'image du produit
+              leading: CircleAvatar(
+                backgroundImage: NetworkImage(produit['imageUrl']),
+              ),
+              onTap: (){}, // permet que les éléments soient cliquable 
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
