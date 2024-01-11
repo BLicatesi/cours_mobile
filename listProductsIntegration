@@ -18,7 +18,7 @@ class _MainAppState extends State<MainApp> {
     {'name': 'Chocapic', 'marque': 'Nestlé', 'quantite': 3, 'descriptif': 'Céréale au chocolat', 'imageUrl': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSddlMBUrVU41EBhHr3XLYfZEc7LAHWXFA1nw&usqp=CAU'},
   ];
 
-  TextEditingController productNameController = TextEditingController();
+  TextEditingController produitNameController = TextEditingController();
   TextEditingController marqueController = TextEditingController();
   TextEditingController quantiteController = TextEditingController();
   TextEditingController descriptifController = TextEditingController();
@@ -39,7 +39,7 @@ class _MainAppState extends State<MainApp> {
               child: Column(
                 children: [
                   TextField(
-                    controller: productNameController,
+                    controller: produitNameController,
                     decoration: InputDecoration(
                       labelText: 'Nom du produit',
                     ),
@@ -95,7 +95,7 @@ class _MainAppState extends State<MainApp> {
                     leading: CircleAvatar(
                       backgroundImage: NetworkImage(produit['imageUrl']),
                     ),
-                    onTap: (){}, // permet que les éléments soient cliquable 
+                    onTap: (){}, // Permet que les éléments soient cliquable 
                   );
                 },
               ),
@@ -107,23 +107,26 @@ class _MainAppState extends State<MainApp> {
   }
   // Fonction qui permet l'ajout des produits
   void ajouterProduit() {
-    String productName = productNameController.text;
+
+    // On récupère les différents input
+    String produitName = produitNameController.text;
     String marque = marqueController.text;
     String quantite = quantiteController.text;
     String descriptif = descriptifController.text;
     String imageUrl = imageUrlController.text;
+
     // On attend l'intégralité (hormis l'image) du formulaire pour pouvoir insérer et finalement afficher les éléments.
-    if (productName.isNotEmpty && marque.isNotEmpty && quantite.isNotEmpty && descriptif.isNotEmpty) {
+    if (produitName.isNotEmpty && marque.isNotEmpty && quantite.isNotEmpty && descriptif.isNotEmpty) {
       setState(() {
         produits.add({
-          'name': productName,
+          'name': produitName,
           'marque': marque,
           'quantite': quantite,
           'descriptif': descriptif,
           'imageUrl': imageUrl
         });
         // Permet d'effacer les champs après avoir ajouté le produit
-        productNameController.clear();
+        produitNameController.clear();
         marqueController.clear();
         quantiteController.clear();
         descriptifController.clear();
