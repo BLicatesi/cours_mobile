@@ -38,6 +38,7 @@ class _MainAppState extends State<MainApp> {
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
+                  // Ajoute un champ input
                   TextField(
                     controller: produitNameController,
                     decoration: InputDecoration(
@@ -74,6 +75,7 @@ class _MainAppState extends State<MainApp> {
             ),
             Row(
               children: [
+                // Ajoute un bouton 
                 ElevatedButton(
                   onPressed: () {
                     ajouterProduit();
