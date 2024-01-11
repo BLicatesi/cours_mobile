@@ -1,18 +1,30 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 void main() {
   runApp(MainApp());
 }
 
-class MainApp extends StatelessWidget {
-  MainApp({super.key});
+class MainApp extends StatefulWidget {
+  MainApp({Key? key}) : super(key: key);
 
+  @override
+  _MainAppState createState() => _MainAppState();
+}
+
+class _MainAppState extends State<MainApp> {
+  // Initialisation de la liste par défaut en dur 
   List<Map<String, dynamic>> produits = [
     {'name': 'Rocher', 'marque': 'Ferrero', 'quantite': 2, 'descriptif': 'Chocolat', 'imageUrl': 'https://media.carrefour.fr/medias/2492169d51f43977a1addb8577183cf3/p_200x200/08000500373118-h1n1-s25.jpg'},
     {'name': 'Chocapic', 'marque': 'Nestlé', 'quantite': 3, 'descriptif': 'Céréale au chocolat', 'imageUrl': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSddlMBUrVU41EBhHr3XLYfZEc7LAHWXFA1nw&usqp=CAU'},
-    {'name': 'Chips', 'marque': 'Lays', 'quantite': 10, 'descriptif': 'Chips salées', 'imageUrl': 'https://media.licdn.com/dms/image/C560BAQHuSERr0x2Cyw/company-logo_200_200/0/1634894870600/lays_logo?e=2147483647&v=beta&t=rbu9c2TeuN13pc8QRvx3RuwESIr0Z7ca4aV5K6tJ50I'},
-    // ICI On peut rajouter d'autre produit, ils seront automatiquement rajouter sur l'écran
   ];
+
+  TextEditingController productNameController = TextEditingController();
+  TextEditingController marqueController = TextEditingController();
+  TextEditingController quantiteController = TextEditingController();
+  TextEditingController descriptifController = TextEditingController();
+  TextEditingController imageUrlController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -22,28 +34,106 @@ class MainApp extends StatelessWidget {
           backgroundColor: Colors.red,
           title: Text('Liste de Produits'),
         ),
-        body: ListView.builder(
-          itemCount: produits.length,
-          itemBuilder: (context, index){
-            Map<String, dynamic> produit = produits[index];
-
-            return ListTile(
-              title: Text(produit['name']),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+        body: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
                 children: [
-                  Text('Marque: ${produit['marque']}, Quantité: ${produit['quantite']}, Descriptif: ${produit['descriptif']}'),
+                  TextField(
+                    controller: productNameController,
+                    decoration: InputDecoration(
+                      labelText: 'Nom du produit',
+                    ),
+                  ),
+                  TextField(
+                    controller: marqueController,
+                    decoration: InputDecoration(
+                      labelText: 'Marque',
+                    ),
+                  ),
+                  TextField(
+                    controller: quantiteController,
+                    decoration: InputDecoration(
+                      labelText: 'Quantité',
+                    ),
+                    keyboardType: TextInputType.number,
+                  ),
+                  TextField(
+                    controller: descriptifController,
+                    decoration: InputDecoration(
+                      labelText: 'Descriptif',
+                    ),
+                  ),
+                  TextField(
+                    controller: imageUrlController,
+                    decoration: InputDecoration(
+                      labelText: 'Url image',
+                    ),
+                  ),
                 ],
               ),
-              // Ce qui permet l'affichage de l'image du produit
-              leading: CircleAvatar(
-                backgroundImage: NetworkImage(produit['imageUrl']),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                ajouterProduit();
+              },
+              child: Text('Ajouter Produit'),
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: produits.length,
+                itemBuilder: (context, index) {
+                  Map<String, dynamic> produit = produits[index];
+                  return ListTile(
+                    title: Text(produit['name'] ?? ''),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Marque: ${produit['marque']}, Quantité: ${produit['quantite']}, Descriptif: ${produit['descriptif']}'),
+                      ],
+                    ),
+                    // Ce qui permet l'affichage de l'image du produit
+                    leading: CircleAvatar(
+                      backgroundImage: NetworkImage(produit['imageUrl']),
+                    ),
+                    onTap: (){}, // permet que les éléments soient cliquable 
+                  );
+                },
               ),
-              onTap: (){}, // permet que les éléments soient cliquable 
-            );
-          },
+            ),
+          ],
         ),
       ),
     );
+  }
+  // Fonction qui permet l'ajout des produits
+  void ajouterProduit() {
+    String productName = productNameController.text;
+    String marque = marqueController.text;
+    String quantite = quantiteController.text;
+    String descriptif = descriptifController.text;
+    String imageUrl = imageUrlController.text;
+    // On attend l'intégralité du formulaire pour pouvoir insérer et finalement afficher les éléments.
+    if (productName.isNotEmpty && marque.isNotEmpty && quantite.isNotEmpty && descriptif.isNotEmpty) {
+      setState(() {
+        produits.add({
+          'name': productName,
+          'marque': marque,
+          'quantite': quantite,
+          'descriptif': descriptif,
+          'imageUrl': imageUrl
+        });
+        // Permet d'effacer les champs après avoir ajouté le produit
+        productNameController.clear();
+        marqueController.clear();
+        quantiteController.clear();
+        descriptifController.clear();
+        imageUrlController.clear();
+      });
+    // Sinon on affiche un message sur la console pour l'instant
+    }else{
+      print("Insérez les éléments attendu");
+    }
   }
 }
